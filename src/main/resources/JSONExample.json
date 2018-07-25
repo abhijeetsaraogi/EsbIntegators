@@ -1,0 +1,462 @@
+{
+	"forms": {
+		"12.0.0": {
+			"nbr": [
+				{
+					"name": "personalInfo",
+					"required": true,
+					"dependsOn": "",
+					"title": "Personal information",
+					"subtitle": "personalInfo.*.id == personalInfo[0].id ? ' ' : 'For family member'",
+					"type": "dynamicForm",
+					"group": "personalInformation",
+					"stage": "quotation",
+					"components": [
+						{
+							"id": "salutation",
+							"model": "personalInfo.*.name.title",
+							"type": "select",
+							"label": "Title/Salutation",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"source": "references:salutations",
+							"rowSize": 0.5
+						},
+						{
+							"id": "gender",
+							"model": "personalInfo.*.gender",
+							"type": "option",
+							"label": "Gender",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"options": [
+								{
+									"data": "M",
+									"label": "Male"
+								},
+								{
+									"data": "F",
+									"label": "Female"
+								}
+							],
+							"rowSize": 0.5
+						},
+						{
+							"id": "nameFirst",
+							"model": "personalInfo.*.name.first",
+							"type": "string",
+							"maxLen": 60,
+							"label": "First name",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"rowSize": 0.5
+						},
+						{
+							"id": "nameLast",
+							"model": "personalInfo.*.name.last",
+							"type": "string",
+							"maxLen": 60,
+							"label": "Last name",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"rowSize": 0.5
+						},
+						{
+							"id": "nameMiddle",
+							"model": "personalInfo.*.name.middle",
+							"type": "string",
+							"maxLen": 30,
+							"label": "Middle name (optional)",
+							"required": false,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"rowSize": 0.5
+						},
+						{
+							"id": "date",
+							"model": "personalInfo.*.dateOfBirth",
+							"type": "date",
+							"label": "Birth date",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"cascade": "personalInfo.*.workPay.occupations.0.employment,personalInfo.*.workPay.occupations.0.occupation,personalInfo.*.workPay.occupations.0.businessNature",
+							"rowSize": 0.375
+						},
+						{
+							"id": "age",
+							"model": "personalInfo.*.age",
+							"type": "label",
+							"computedValue": "calculateAge(#this.personalInfo.*.dateOfBirth)",
+							"label": "Age",
+							"required": false,
+							"visible": true,
+							"dataType": "number",
+							"readOnly": false,
+							"requried": false,
+							"rowSize": 0.125
+						},
+						{
+							"id": "countryCallingCode",
+							"model": "personalInfo.*.phoneCountryCode",
+							"type": "select",
+							"label": "Phone Number Country Code",
+							"required": false,
+							"visible": true,
+							"readOnly": false,
+							"options": [
+								{
+									"data": "+63",
+									"label": "+63 -PH"
+								},
+								{
+									"data": "+1",
+									"label": "+1 -US"
+								},
+								{
+									"data": "other",
+									"label": "Oth -Others"
+								}
+							],
+							"rowSize": 0.5
+						},
+						{
+							"id": "phone",
+							"model": "personalInfo.*.phone",
+							"type": "phone",
+							"maxLen": 20,
+							"label": "Phone Number",
+							"required": false,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"regex": "^[+]?\\d+$",
+							"rowSize": 0.5
+						},
+						{
+							"id": "countryCallingCode",
+							"model": "personalInfo.*.mobileCountryCode",
+							"type": "select",
+							"label": "Mobile Number Country Code",
+							"required": false,
+							"visible": true,
+							"readOnly": false,
+							"options": [
+								{
+									"data": "+63",
+									"label": "+63 -PH"
+								},
+								{
+									"data": "+1",
+									"label": "+1 -US"
+								},
+								{
+									"data": "other",
+									"label": "Oth -Others"
+								}
+							],
+							"rowSize": 0.5
+						},
+						{
+							"id": "phone",
+							"model": "personalInfo.*.mobile",
+							"type": "phone",
+							"maxLen": 20,
+							"label": "Mobile Number",
+							"required": false,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"regex": "^[+]?\\d+$",
+							"rowSize": 0.5
+						},
+						{
+							"id": "email",
+							"model": "personalInfo.*.email",
+							"type": "email",
+							"maxLen": 50,
+							"label": "Email",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false
+						},
+						{
+							"id": "address",
+							"model": "personalInfo.*.address",
+							"type": "string",
+							"maxLen": 100,
+							"label": "Address",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false
+						},
+						{
+							"id": "country",
+							"model": "personalInfo.*.country",
+							"type": "select",
+							"label": "Country",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"cascade": "personalInfo.*.city,personalInfo.*.cityCustom",
+							"source": "references:countries"
+						},
+						{
+							"id": "city",
+							"model": "personalInfo.*.city",
+							"type": "select",
+							"defaultValue": "personalInfo.*.country != '163' ? 13 : undefined",
+							"label": "City",
+							"required": "personalInfo.*.country",
+							"visible": "personalInfo.*.country",
+							"dataType": "string",
+							"readOnly": false,
+							"editable": "personalInfo.*.country == '163'",
+							"source": "references:provinces[personalInfo.*.country]"
+						},
+						{
+							"id": "cityCustom",
+							"model": "personalInfo.*.cityCustom",
+							"type": "string",
+							"maxLen": 30,
+							"required": "(personalInfo.*.country && personalInfo.*.city == 13)",
+							"visible": "(personalInfo.*.country && personalInfo.*.city == 13)",
+							"readOnly": false,
+							"placeholder": "City"
+						},
+						{
+							"id": "zipcode",
+							"model": "personalInfo.*.zipcode",
+							"type": "string",
+							"maxLen": 10,
+							"label": "Zip Code",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"regex": "^\\d+$"
+						},
+						{
+							"id": "occupationCategory",
+							"model": "personalInfo.*.workPay.occupations.0.employment",
+							"type": "option",
+							"label": "Occupation Category",
+							"required": true,
+							"visible": true,
+							"dataType": "string",
+							"readOnly": false,
+							"cascade": "personalInfo.*.workPay.occupations.0.occupation,personalInfo.*.workPay.occupations.0.businessNature",
+							"options": [
+								{
+									"data": "employed",
+									"label": "Employed"
+								},
+								{
+									"data": "selfemployed",
+									"label": "Self employed"
+								},
+								{
+									"data": "notemployed",
+									"label": "Not employed"
+								}
+							]
+						},
+						{
+							"id": "businessNature",
+							"model": "personalInfo.*.workPay.occupations.0.businessNature",
+							"parent": "personalInfo.*.workPay.occupations.0.employment",
+							"type": "select",
+							"label": "Nature of work/business",
+							"required": "personalInfo.*.workPay.occupations[0].employment == 'employed' || personalInfo.*.workPay.occupations[0].employment == 'selfemployed'",
+							"visible": "personalInfo.*.workPay.occupations[0].employment == 'employed' || personalInfo.*.workPay.occupations[0].employment == 'selfemployed'",
+							"dataType": "string",
+							"readOnly": false,
+							"options": [
+								{
+									"data": "Accommodation and Food Services",
+									"label": "Accommodation and Food Services"
+								},
+								{
+									"data": "Agriculture, Forestry, Fishing and Hunting",
+									"label": "Agriculture, Forestry, Fishing and Hunting"
+								},
+								{
+									"data": "Arts, Entertainment, and Recreation",
+									"label": "Arts, Entertainment, and Recreation"
+								},
+								{
+									"data": "Construction",
+									"label": "Construction"
+								},
+								{
+									"data": "Educational Services",
+									"label": "Educational Services"
+								},
+								{
+									"data": "Finance and Insurance",
+									"label": "Finance and Insurance"
+								},
+								{
+									"data": "Health Care and Social Assistance",
+									"label": "Health Care and Social Assistance"
+								},
+								{
+									"data": "Information",
+									"label": "Information"
+								},
+								{
+									"data": "Manufacturing",
+									"label": "Manufacturing"
+								},
+								{
+									"data": "Mining, Quarrying, and Oil and Gas Extraction",
+									"label": "Mining, Quarrying, and Oil and Gas Extraction"
+								},
+								{
+									"data": "Not Working",
+									"label": "Not Working"
+								},
+								{
+									"data": "Other Services (except Public Administration)",
+									"label": "Other Services (except Public Administration)"
+								},
+								{
+									"data": "Professional Services",
+									"label": "Professional Services"
+								},
+								{
+									"data": "Public Administration",
+									"label": "Public Administration"
+								},
+								{
+									"data": "Real Estate and Rental and Leasing",
+									"label": "Real Estate and Rental and Leasing"
+								},
+								{
+									"data": "Scientific and Technical Services",
+									"label": "Scientific and Technical Services"
+								},
+								{
+									"data": "Transportation and Warehousing",
+									"label": "Transportation and Warehousing"
+								},
+								{
+									"data": "Utilities",
+									"label": "Utilities"
+								},
+								{
+									"data": "Wholesale and Retail Trade",
+									"label": "Wholesale and Retail Trade"
+								}
+							]
+						},
+						{
+							"id": "occupationList",
+							"model": "personalInfo.*.workPay.occupations.0.occupation",
+							"parent": "personalInfo.*.workPay.occupations.0.employment",
+							"type": "select",
+							"label": "Occupation",
+							"required": "personalInfo.*.workPay.occupations[0].employment != ''",
+							"visible": "personalInfo.*.workPay.occupations[0].employment != ''",
+							"dataType": "string",
+							"readOnly": false,
+							"source": "references:occupations[personalInfo.*.workPay.occupations[0].employment]"
+						},
+						{
+							"id": "policyHolderIndex",
+							"model": "personalInfoSummary.policyHolderIndex",
+							"type": "select",
+							"defaultValue": "'0'",
+							"label": "Who will be the owner of this policy?",
+							"required": false,
+							"visible": "personalInfo.*.id == personalInfo[0].id",
+							"dataType": "string",
+							"readOnly": false,
+							"layout": "gradational"
+						},
+						{
+							"id": "assuredIndex",
+							"model": "personalInfoSummary.assuredIndex",
+							"type": "select",
+							"defaultValue": "'0'",
+							"label": "Who is this policy for?",
+							"required": false,
+							"visible": "personalInfo.*.id == personalInfo[0].id",
+							"dataType": "string",
+							"readOnly": false,
+							"layout": "gradational"
+						},
+						{
+							"id": "relationshipToInsured",
+							"model": "personalRelationship.relationshipToInsured",
+							"type": "select",
+							"label": "Relationship of policyowner to life insured",
+							"required": "!(policyHolder.assured) && personalInfo.*.id == personalInfo[0].id",
+							"visible": "!(policyHolder.assured) && personalInfo.*.id == personalInfo[0].id",
+							"dataType": "string",
+							"readOnly": false,
+							"layout": "gradational",
+							"options": [
+								{
+									"data": "spouse",
+									"label": "Spouse"
+								},
+								{
+									"data": "child",
+									"label": "Child"
+								},
+								{
+									"data": "father",
+									"label": "Father"
+								},
+								{
+									"data": "mother",
+									"label": "Mother"
+								},
+								{
+									"data": "sibling",
+									"label": "Sibling"
+								},
+								{
+									"data": "grandparent",
+									"label": "Grandparent"
+								},
+								{
+									"data": "other",
+									"label": "Other"
+								},
+								{
+									"data": "estate",
+									"label": "Estate"
+								}
+							],
+							"placeholder": "Please select"
+						},
+						{
+							"model": "personalRelationship.relationshipToInsuredDetail",
+							"type": "string",
+							"label": " ",
+							"required": "!(policyHolder.assured) && personalInfo.*.id == personalInfo[0].id && personalRelationship.relationshipToInsured == 'other'",
+							"visible": "!(policyHolder.assured) && personalInfo.*.id == personalInfo[0].id && personalRelationship.relationshipToInsured == 'other'",
+							"readOnly": false,
+							"layout": "gradational"
+						}
+					]
+				}
+			]
+		}
+	}
+}
